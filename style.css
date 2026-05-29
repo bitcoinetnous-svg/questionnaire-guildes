@@ -222,11 +222,20 @@ html, body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.question-titre {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
 .question-text {
   font-size: clamp(1rem, 2.5vw, 1.15rem);
   color: var(--text-primary);
   margin-bottom: 24px;
   line-height: 1.65;
+  white-space: pre-line;
 }
 
 .choices-container {
