@@ -416,6 +416,28 @@ html, body {
   font-style: italic;
 }
 
+.guild-description p {
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.guild-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* Bloc force / risque / quête */
+.guild-highlight {
+  background: rgba(201, 168, 76, 0.05);
+  border-left: 2px solid var(--gold);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.92rem !important;
+  color: var(--text-secondary);
+}
+
 .result-buttons {
   display: flex;
   justify-content: center;

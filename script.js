@@ -1,234 +1,195 @@
 /* ============================================================
-   QUESTIONNAIRE — La Quête des Guildes — Bitcoin&Nous
+   La Quête des Guildes — Bitcoin&Nous
    ============================================================ */
 
-/* ---------- GUILDES ---------- */
+/* ---------- 3 GUILDES ---------- */
 const GUILDES = {
   eveilles: {
-    id: 'eveilles',
-    nom: 'Les Éveillés',
+    nom: 'la Guilde des Éveillés',
+    titre: 'Tu appartiens à la Guilde des Éveillés.',
     embleme: '🌒',
-    tagline: 'Ceux qui ont choisi de voir.',
-    souverainete: 'Souveraineté intérieure',
-    description:
-      'Tu as senti quelque chose que beaucoup ignorent encore : que la réalité qu\'on te décrit ne correspond pas à ce que tu ressens. Tu questionnes. Tu cherches. Tu refuses les réponses faciles. ' +
-      'Ce n\'est pas un défaut — c\'est le premier acte de courage. Beaucoup de gens vivent confortablement dans l\'illusion. Toi, tu as préféré l\'inconfort de la lucidité. ' +
-      'Bitcoin, pour toi, c\'est d\'abord une question : "Et si j\'avais mal compris comment fonctionne le système ?"',
-    actions: [
-      'Prends 30 minutes cette semaine pour noter ce qui ne colle plus dans ta vie — sans censure, sans filtre.',
-      'Lis ou écoute une ressource sur la monnaie et l\'inflation, pas pour tout comprendre, mais pour commencer à voir.',
-      'Identifie une conviction que tu as héritée — pas choisie — et demande-toi si elle est toujours la tienne.',
+    texte: [
+      'Tu sens que quelque chose cloche dans le monde actuel. Les discours officiels ne suffisent plus, les repères s\'effacent, mais tout n\'est pas encore clair.',
+      'Ce n\'est pas une faiblesse. C\'est le début de la quête.',
+      'Ta force : tu n\'es plus totalement endormi.\nTon risque : rester dans le brouillard sans passer à l\'action.\nTa prochaine quête : comprendre les règles du jeu pour ne plus les subir.',
     ],
-  },
-  batisseurs: {
-    id: 'batisseurs',
-    nom: 'Les Bâtisseurs',
-    embleme: '⚒',
-    tagline: 'Ceux qui construisent plutôt que d\'attendre.',
-    souverainete: 'Souveraineté financière & action',
-    description:
-      'Tu n\'es pas du genre à attendre que les choses changent toutes seules. Tu veux agir. Construire. Avancer. ' +
-      'Tu t\'intéresses au concret : comment protéger ce que tu as construit, comment bâtir quelque chose qui dure, comment ne plus dépendre de décisions que tu ne contrôles pas. ' +
-      'Bitcoin, pour toi, c\'est un outil parmi d\'autres — mais un outil sérieux, à comprendre sérieusement.',
-    actions: [
-      'Fais un bilan honnête de ta situation financière : ce que tu possèdes vraiment, ce que tu dois, ce qui t\'appartient réellement.',
-      'Commence à distinguer "actifs" et "dépenses" dans ton quotidien — et décide d\'orienter 1% de plus vers des actifs durables.',
-      'Renseigne-toi sur Bitcoin non pas comme un investissement, mais comme une épargne de long terme, résiliente et hors système.',
-    ],
+    bouton: 'Recevoir ma carte de départ',
   },
   gardiens: {
-    id: 'gardiens',
-    nom: 'Les Gardiens',
+    nom: 'la Guilde des Gardiens',
+    titre: 'Tu appartiens à la Guilde des Gardiens.',
     embleme: '🛡',
-    tagline: 'Ceux qui protègent ce qui compte vraiment.',
-    souverainete: 'Souveraineté financière & transmission',
-    description:
-      'Ce qui te motive, c\'est la protection : de ta famille, de ton patrimoine, de tes valeurs. Tu penses au long terme. Tu veux transmettre quelque chose de solide. ' +
-      'Tu as peut-être l\'intuition que le monde change plus vite qu\'on ne le dit, et que se préparer n\'est pas de la paranoïa — c\'est de la responsabilité. ' +
-      'Bitcoin, pour toi, c\'est une manière de protéger la valeur de ce que tu as construit contre l\'érosion silencieuse du temps et de l\'inflation.',
-    actions: [
-      'Réfléchis à ce que tu veux transmettre à tes proches dans 10 ans — pas seulement financièrement, mais en termes de valeurs et de liberté.',
-      'Évalue honnêtement à quel point tes économies actuelles résistent à l\'inflation. Ce que tu gardes perd-il de la valeur chaque année ?',
-      'Explore l\'idée de "l\'auto-garde" : posséder quelque chose dont tu as vraiment le contrôle, sans intermédiaire ni dépendance.',
+    texte: [
+      'Tu as compris que la souveraineté n\'est pas une idée abstraite. C\'est une responsabilité concrète : protéger ton temps, ton argent, tes valeurs, ton énergie et tes proches.',
+      'Tu ne veux plus vivre en contradiction avec ce que tu as compris. Mais il te manque peut-être encore une méthode, un cadre ou un plan.',
+      'Ta force : tu es prêt à reprendre la main.\nTon risque : rester coincé entre lucidité et passage à l\'action.\nTa prochaine quête : transformer ta compréhension en stratégie de vie.',
     ],
+    bouton: 'Faire mon diagnostic souveraineté',
   },
-  passeurs: {
-    id: 'passeurs',
-    nom: 'Les Passeurs',
-    embleme: '🕯',
-    tagline: 'Ceux qui éclairent le chemin pour les autres.',
-    souverainete: 'Souveraineté communautaire',
-    description:
-      'Tu n\'es pas là que pour toi. Tu penses aux autres — à ceux qui cherchent, à ceux qui sont perdus, à ceux qui ont besoin d\'un signal dans le brouillard. ' +
-      'Tu as un don naturel pour le lien, la transmission, l\'explication. Les gens te font confiance. Et tu prends cette confiance au sérieux. ' +
-      'Bitcoin, pour toi, c\'est quelque chose que tu veux comprendre pour pouvoir en parler — sans te tromper, sans perdre les autres en route.',
-    actions: [
-      'Identifie 2 ou 3 personnes dans ton entourage qui semblent "chercher" — et propose-leur une vraie conversation, sans agenda.',
-      'Rejoins ou crée un espace d\'échange local (groupe de discussion, rencontre mensuelle, cercle de lecture) autour de thèmes qui comptent pour toi.',
-      'Partage une idée qui t\'a transformé cette année — sous forme d\'un message, d\'un appel, ou d\'un article — à quelqu\'un qui pourrait en avoir besoin.',
+  batisseurs: {
+    nom: 'la Guilde des Bâtisseurs',
+    titre: 'Tu appartiens à la Guilde des Bâtisseurs.',
+    embleme: '⚒',
+    texte: [
+      'Tu ne veux plus seulement dénoncer l\'ancien monde. Tu veux construire le nouveau.',
+      'Tu as compris que Bitcoin n\'est pas seulement une réserve de valeur. C\'est une école de responsabilité, de vérité et de coopération volontaire.',
+      'Ta force : tu es déjà en mouvement.\nTon risque : construire seul, t\'épuiser ou te disperser.\nTa prochaine quête : rejoindre des pairs alignés pour bâtir plus grand que toi.',
     ],
-  },
-  souverains: {
-    id: 'souverains',
-    nom: 'Les Souverains',
-    embleme: '⚡',
-    tagline: 'Ceux qui avancent sur tous les fronts.',
-    souverainete: 'Souveraineté intérieure · financière · communautaire',
-    description:
-      'Tu n\'es pas enfermé dans une seule dimension. Tu cherches à être lucide sur toi-même, responsable de tes finances, et ancré dans une communauté réelle. ' +
-      'Ce n\'est pas que tu aies tout résolu — c\'est que tu n\'as renoncé à rien. Tu sais que la transformation est un chemin, pas une destination. ' +
-      'Bitcoin, pour toi, c\'est une convergence : un outil technique, une philosophie de vie, et une communauté d\'êtres humains qui veulent vivre autrement.',
-    actions: [
-      'Choisis un domaine (intérieur, financier, communautaire) dans lequel tu vas prendre un engagement concret ce mois-ci — et note-le.',
-      'Partage ta démarche avec quelqu\'un de confiance. La souveraineté n\'est pas une aventure solitaire.',
-      'Explore ce que Bitcoin représente au-delà du prix : une architecture de confiance, un protocole de liberté. Ça change le regard.',
-    ],
+    bouton: 'Rejoindre les bâtisseurs',
   },
 };
 
-/* ---------- QUESTIONS ---------- */
+/* ---------- 15 QUESTIONS — 3 RÉPONSES CHACUNE ---------- */
 const QUESTIONS = [
-  // === CHAPITRE 1 — LE SENS ===
+
+  /* Étape 1 — L'appel de la quête */
   {
-    chapitre: 'Le Sens',
-    narratif: null,
-    texte: 'Quand tu penses à ta vie en ce moment, quelle phrase résonne le plus ?',
+    etape: "Étape 1 — L'appel de la quête",
+    texte: "Quand tu regardes le monde actuel, quelle sensation domine ?",
     choix: [
-      { texte: 'Je fais ce qu\'on attend de moi, mais j\'ai du mal à voir pourquoi.', scores: { eveilles: 3, gardiens: 1 } },
-      { texte: 'J\'ai des projets, mais quelque chose m\'empêche d\'avancer vraiment.', scores: { batisseurs: 3, eveilles: 1 } },
-      { texte: 'Je veux laisser quelque chose de solide — pas juste survivre.', scores: { gardiens: 3, passeurs: 1 } },
-      { texte: 'Je cherche du sens, et je commence à me demander si mes valeurs sont vraiment les miennes.', scores: { eveilles: 2, souverains: 2 } },
+      { texte: "Je sens que quelque chose cloche, mais je n'arrive pas encore à tout relier.", guilde: "eveilles" },
+      { texte: "J'ai compris qu'il y a un problème profond, et ça crée une vraie dissonance dans ma vie.", guilde: "gardiens" },
+      { texte: "Je ne veux plus seulement analyser le problème, je veux contribuer à construire autre chose.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'Le Sens',
-    narratif: null,
-    texte: 'Si tu devais être honnête : qu\'est-ce qui manque le plus dans ta vie quotidienne ?',
+    etape: "Étape 1 — L'appel de la quête",
+    texte: "Quelle douleur est la plus présente chez toi aujourd'hui ?",
     choix: [
-      { texte: 'De la clarté — je ne sais plus vraiment ce que je veux.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'De l\'autonomie — j\'ai l\'impression d\'être toujours dépendant de quelque chose ou quelqu\'un.', scores: { batisseurs: 2, gardiens: 2 } },
-      { texte: 'Des gens vrais — des relations qui ne sont pas superficielles.', scores: { passeurs: 3, souverains: 1 } },
-      { texte: 'Du concret — j\'en ai assez des discours, je veux agir.', scores: { batisseurs: 3, gardiens: 1 } },
+      { texte: "Le manque de repères, de sens ou de clarté.", guilde: "eveilles" },
+      { texte: "L'écart entre mes valeurs et mon mode de vie actuel.", guilde: "gardiens" },
+      { texte: "La frustration de ne pas encore bâtir quelque chose d'utile avec des personnes alignées.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'Le Sens',
-    narratif: null,
-    texte: 'Face à une décision importante, tu as tendance à…',
+    etape: "Étape 1 — L'appel de la quête",
+    texte: "Face aux institutions, aux banques, à l'État, tu ressens surtout…",
     choix: [
-      { texte: 'Analyser longtemps avant d\'agir — tu veux comprendre avant de te lancer.', scores: { eveilles: 2, gardiens: 2 } },
-      { texte: 'Passer à l\'action rapidement — l\'inaction te pèse plus que l\'erreur.', scores: { batisseurs: 3, souverains: 1 } },
-      { texte: 'Chercher l\'avis de personnes de confiance avant de décider.', scores: { passeurs: 2, souverains: 2 } },
-      { texte: 'Remettre à plus tard — quelque chose te retient, tu ne sais pas toujours quoi.', scores: { eveilles: 3 } },
-    ],
-  },
-  {
-    chapitre: 'Le Sens',
-    narratif: null,
-    texte: 'Quand tu imagines ta vie dans 10 ans, ce qui compte le plus c\'est…',
-    choix: [
-      { texte: 'Être libéré des peurs et des dépendances qui me limitent aujourd\'hui.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'Avoir construit quelque chose de tangible — financièrement, professionnellement.', scores: { batisseurs: 3 } },
-      { texte: 'Savoir que mes proches sont protégés et que j\'ai transmis quelque chose de bon.', scores: { gardiens: 3, passeurs: 1 } },
-      { texte: 'Être entouré de personnes qui partagent mes valeurs et avancent avec moi.', scores: { passeurs: 3, souverains: 1 } },
+      { texte: "Une méfiance croissante, mais encore beaucoup de confusion.", guilde: "eveilles" },
+      { texte: "Une lucidité parfois lourde à porter, avec un sentiment d'impuissance.", guilde: "gardiens" },
+      { texte: "Le besoin de créer des alternatives concrètes plutôt que seulement critiquer.", guilde: "batisseurs" },
     ],
   },
 
-  // === CHAPITRE 2 — LE CONTRÔLE ===
+  /* Étape 2 — Le brouillard fiat */
   {
-    chapitre: 'Le Contrôle',
-    narratif: 'Tu avances. Le chemin se précise. Maintenant, parlons de ce que tu maîtrises vraiment.',
-    texte: 'Quel aspect du système actuel te pèse le plus ?',
+    etape: "Étape 2 — Le brouillard fiat",
+    texte: "Pour toi, le système fiat, c'est plutôt…",
     choix: [
-      { texte: 'L\'inflation silencieuse — ce que j\'épargne vaut moins chaque année.', scores: { batisseurs: 2, gardiens: 3 } },
-      { texte: 'La dépendance — j\'ai l\'impression d\'être tributaire de décisions que je ne contrôle pas.', scores: { eveilles: 2, batisseurs: 2 } },
-      { texte: 'Le manque de transparence — on ne nous dit pas la vérité sur comment les choses fonctionnent.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'L\'individualisme ambiant — les gens ne se serrent plus les coudes.', scores: { passeurs: 3, gardiens: 1 } },
+      { texte: "Un sujet que je commence à découvrir, sans encore tout comprendre.", guilde: "eveilles" },
+      { texte: "Une clé de lecture essentielle pour comprendre l'inflation, la dépendance et la perte de contrôle.", guilde: "gardiens" },
+      { texte: "Le vieux monde à dépasser par des outils, des réseaux et des communautés plus souveraines.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'Le Contrôle',
-    narratif: null,
-    texte: 'Si tu pouvais reprendre une chose en main dès demain, ce serait…',
+    etape: "Étape 2 — Le brouillard fiat",
+    texte: "Quand tu penses à ton argent et à ton avenir financier…",
     choix: [
-      { texte: 'Ta manière de penser — sortir des schémas reçus, penser par toi-même.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'Ta situation financière — comprendre ce que tu possèdes vraiment et le protéger.', scores: { batisseurs: 2, gardiens: 2 } },
-      { texte: 'Ton temps — arrêter de le vendre ou de le subir.', scores: { batisseurs: 3, eveilles: 1 } },
-      { texte: 'Tes relations — construire un vrai réseau de confiance.', scores: { passeurs: 3, souverains: 1 } },
+      { texte: "Je sens que je devrais mieux comprendre ce qui se joue.", guilde: "eveilles" },
+      { texte: "Je veux reprendre le contrôle et ne plus dépendre uniquement du système classique.", guilde: "gardiens" },
+      { texte: "Je veux construire une stratégie transmissible, utile pour moi, mes proches et ma communauté.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'Le Contrôle',
-    narratif: null,
-    texte: 'Ton rapport à l\'argent en ce moment, c\'est plutôt…',
+    etape: "Étape 2 — Le brouillard fiat",
+    texte: "Bitcoin représente aujourd'hui pour toi…",
     choix: [
-      { texte: 'Je gagne, je dépense, et je n\'ai pas vraiment de stratégie.', scores: { eveilles: 2, batisseurs: 1 } },
-      { texte: 'J\'épargne, mais j\'ai l\'intuition que je fais fausse route — que la valeur se perd quand même.', scores: { gardiens: 3, batisseurs: 1 } },
-      { texte: 'Je cherche à construire une vraie indépendance financière, mais c\'est flou.', scores: { batisseurs: 3, souverains: 1 } },
-      { texte: 'L\'argent m\'intéresse moins que le sens — mais je sais que l\'ignorer est une erreur.', scores: { eveilles: 2, passeurs: 2 } },
-    ],
-  },
-  {
-    chapitre: 'Le Contrôle',
-    narratif: null,
-    texte: 'Qu\'est-ce qui te retient le plus souvent d\'agir selon tes convictions ?',
-    choix: [
-      { texte: 'La peur du regard des autres — qu\'on me prenne pour un fou ou un extrémiste.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'Le manque de temps ou d\'énergie — j\'ai déjà trop à gérer.', scores: { batisseurs: 2, gardiens: 2 } },
-      { texte: 'L\'incertitude — je ne suis pas encore sûr de ce que je veux vraiment.', scores: { eveilles: 2, souverains: 2 } },
-      { texte: 'L\'isolement — sans soutien, c\'est difficile de tenir.', scores: { passeurs: 3, gardiens: 1 } },
+      { texte: "Une porte d'entrée intrigante vers un autre rapport à l'argent.", guilde: "eveilles" },
+      { texte: "Un outil concret de souveraineté, de responsabilité et de long terme.", guilde: "gardiens" },
+      { texte: "Une infrastructure morale et communautaire pour construire autrement.", guilde: "batisseurs" },
     ],
   },
 
-  // === CHAPITRE 3 — LA COMMUNAUTÉ ===
+  /* Étape 3 — La clé de souveraineté */
   {
-    chapitre: 'La Communauté',
-    narratif: 'Dernière épreuve. Parlons de ceux qui t\'entourent — et de ceux que tu cherches peut-être encore.',
-    texte: 'Ton entourage actuel (amis, famille, collègues)…',
+    etape: "Étape 3 — La clé de souveraineté",
+    texte: "Quand tu entends \"reprendre la responsabilité de ta vie\", tu te dis…",
     choix: [
-      { texte: 'Ne comprend pas toujours où je vais — mais c\'est normal, je change.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'M\'aide à avancer concrètement — c\'est précieux.', scores: { batisseurs: 2, gardiens: 2 } },
-      { texte: 'M\'apporte de la sécurité et de la chaleur, mais pas forcément de la stimulation.', scores: { gardiens: 3 } },
-      { texte: 'Est trop limité — je cherche des gens avec qui aller plus loin.', scores: { passeurs: 2, souverains: 2 } },
+      { texte: "J'en ai envie, mais je ne sais pas encore par où commencer.", guilde: "eveilles" },
+      { texte: "C'est exactement le sujet : personne ne viendra me sauver à ma place.", guilde: "gardiens" },
+      { texte: "C'est la base : maintenant, je veux aider d'autres personnes à reprendre aussi leur pouvoir d'action.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'La Communauté',
-    narratif: null,
-    texte: 'Quand tu partages une idée qui compte pour toi, tu cherches surtout…',
+    etape: "Étape 3 — La clé de souveraineté",
+    texte: "Ton rapport au temps long ressemble plutôt à quoi ?",
     choix: [
-      { texte: 'À comprendre si je suis dans le vrai — j\'ai besoin de confronter mes idées.', scores: { eveilles: 3 } },
-      { texte: 'À convaincre — si je vois quelque chose d\'important, je veux que les autres le voient aussi.', scores: { passeurs: 3, batisseurs: 1 } },
-      { texte: 'À créer du lien — une bonne conversation vaut plus que d\'avoir raison.', scores: { passeurs: 2, souverains: 2 } },
-      { texte: 'À passer à l\'action ensemble — les idées seules ne suffisent pas.', scores: { batisseurs: 2, passeurs: 2 } },
+      { texte: "Je commence à comprendre que je dois sortir de l'urgence permanente.", guilde: "eveilles" },
+      { texte: "J'essaie de structurer mes finances, mes choix et mes habitudes sur plusieurs années.", guilde: "gardiens" },
+      { texte: "Je pense déjà en transmission, en construction durable et en impact à long terme.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'La Communauté',
-    narratif: null,
-    texte: 'Quel rôle joues-tu naturellement dans un groupe ?',
+    etape: "Étape 3 — La clé de souveraineté",
+    texte: "Dans ta vie quotidienne, où en es-tu dans ta souveraineté concrète ?",
     choix: [
-      { texte: 'Celui qui pose les questions inconfortables — qui fait voir ce qu\'on préfère ignorer.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'Celui qui structure et avance — qui transforme les discussions en plans.', scores: { batisseurs: 3 } },
-      { texte: 'Celui qui stabilise — qui protège le groupe et garde le cap sur l\'essentiel.', scores: { gardiens: 3, passeurs: 1 } },
-      { texte: 'Celui qui relie — qui crée du lien, fait les présentations, tisse la toile.', scores: { passeurs: 3, souverains: 1 } },
+      { texte: "Je prends conscience de mes dépendances : argent, temps, travail, information.", guilde: "eveilles" },
+      { texte: "Je reprends progressivement la main sur certains domaines importants.", guilde: "gardiens" },
+      { texte: "J'organise activement ma vie autour de plus d'autonomie, de résilience et de contribution.", guilde: "batisseurs" },
+    ],
+  },
+
+  /* Étape 4 — L'épreuve du miroir */
+  {
+    etape: "Étape 4 — L'épreuve du miroir",
+    texte: "Quand tu compares tes valeurs et ta vie actuelle…",
+    choix: [
+      { texte: "Je sens un malaise, mais il reste encore flou.", guilde: "eveilles" },
+      { texte: "Je vois clairement des incohérences que je ne peux plus ignorer.", guilde: "gardiens" },
+      { texte: "J'ai déjà commencé à réorganiser ma vie autour de mes valeurs.", guilde: "batisseurs" },
     ],
   },
   {
-    chapitre: 'La Communauté',
-    narratif: null,
-    texte: 'Ce que tu voudrais trouver dans une communauté, c\'est surtout…',
+    etape: "Étape 4 — L'épreuve du miroir",
+    texte: "Quelle phrase te correspond le mieux ?",
     choix: [
-      { texte: 'Des gens qui pensent par eux-mêmes et n\'ont pas peur de remettre les choses en question.', scores: { eveilles: 3, souverains: 1 } },
-      { texte: 'Des projets concrets, des gens qui font — pas juste qui parlent.', scores: { batisseurs: 3 } },
-      { texte: 'De la confiance et de la durée — des relations qui tiennent dans le temps.', scores: { gardiens: 2, passeurs: 2 } },
-      { texte: 'Un endroit pour transmettre et apprendre — aller plus loin ensemble.', scores: { passeurs: 3, souverains: 1 } },
+      { texte: "J'ai besoin de comprendre ce qui m'arrive.", guilde: "eveilles" },
+      { texte: "J'ai besoin d'un cadre pour passer de la prise de conscience à l'action.", guilde: "gardiens" },
+      { texte: "J'ai besoin de pairs pour construire, transmettre et avancer plus loin.", guilde: "batisseurs" },
+    ],
+  },
+  {
+    etape: "Étape 4 — L'épreuve du miroir",
+    texte: "Face à l'inconfort du changement, tu as tendance à…",
+    choix: [
+      { texte: "Observer, réfléchir, chercher des repères.", guilde: "eveilles" },
+      { texte: "Avancer pas à pas, même si c'est inconfortable.", guilde: "gardiens" },
+      { texte: "Transformer l'inconfort en projet, en action ou en transmission.", guilde: "batisseurs" },
+    ],
+  },
+
+  /* Étape 5 — La rencontre de la guilde */
+  {
+    etape: "Étape 5 — La rencontre de la guilde",
+    texte: "Ton rapport à la communauté Bitcoin aujourd'hui…",
+    choix: [
+      { texte: "Je l'observe encore de loin.", guilde: "eveilles" },
+      { texte: "J'y trouve des personnes qui comprennent enfin ce que je ressens.", guilde: "gardiens" },
+      { texte: "Je veux y prendre ma place activement : témoigner, aider, organiser, bâtir.", guilde: "batisseurs" },
+    ],
+  },
+  {
+    etape: "Étape 5 — La rencontre de la guilde",
+    texte: "Si Bitcoin&Nous te proposait une prochaine étape, tu choisirais plutôt…",
+    choix: [
+      { texte: "Une carte claire pour comprendre Bitcoin, le système fiat et la souveraineté.", guilde: "eveilles" },
+      { texte: "Un diagnostic pour clarifier mes valeurs, mes blocages et mon plan d'action.", guilde: "gardiens" },
+      { texte: "Un cercle de bâtisseurs pour contribuer avec d'autres personnes alignées.", guilde: "batisseurs" },
+    ],
+  },
+  {
+    etape: "Étape 5 — La rencontre de la guilde",
+    texte: "Dans un an, tu aimerais pouvoir dire…",
+    choix: [
+      { texte: "Je comprends enfin ce qui me dérangeait dans le monde actuel.", guilde: "eveilles" },
+      { texte: "J'ai repris la main sur ma vie et je suis plus aligné avec mes valeurs.", guilde: "gardiens" },
+      { texte: "Je contribue à une communauté vivante et je construis une alternative concrète.", guilde: "batisseurs" },
     ],
   },
 ];
 
 /* ---------- ÉTAT ---------- */
-let scores = { eveilles: 0, batisseurs: 0, gardiens: 0, passeurs: 0, souverains: 0 };
+let scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
 let questionIndex = 0;
 
 /* ---------- DOM ---------- */
@@ -258,67 +219,42 @@ document.getElementById('btn-restart').addEventListener('click', () => {
 });
 
 function resetState() {
-  scores = { eveilles: 0, batisseurs: 0, gardiens: 0, passeurs: 0, souverains: 0 };
+  scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
   questionIndex = 0;
 }
 
-/* ---------- QUESTION ---------- */
+/* ---------- RENDU D'UNE QUESTION ---------- */
 function renderQuestion() {
   const q = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
-  const progressPct = Math.round((questionIndex / total) * 100);
 
-  // Progression
-  document.getElementById('progress-bar').style.width = progressPct + '%';
-  document.getElementById('question-counter').textContent = `${questionIndex + 1} / ${total}`;
-  document.getElementById('chapter-label').textContent = q.chapitre;
-
-  // Bandeau narratif
-  const banner = document.getElementById('narrative-banner');
-  if (q.narratif) {
-    banner.textContent = q.narratif;
-    banner.classList.remove('hidden');
-  } else {
-    banner.classList.add('hidden');
-  }
-
-  // Question
+  document.getElementById('progress-bar').style.width = Math.round((questionIndex / total) * 100) + '%';
+  document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
+  document.getElementById('chapter-label').textContent = q.etape;
+  document.getElementById('narrative-banner').classList.add('hidden');
   document.getElementById('question-text').textContent = q.texte;
 
-  // Choix
   const container = document.getElementById('choices-container');
   container.innerHTML = '';
-
-  q.choix.forEach((choix, idx) => {
+  q.choix.forEach(function(choix) {
     const btn = document.createElement('button');
     btn.className = 'choice-card';
     btn.textContent = choix.texte;
-    btn.addEventListener('click', () => selectChoice(choix, btn));
+    btn.addEventListener('click', function() { selectChoice(choix, btn); });
     container.appendChild(btn);
   });
 
-  // Réanimer la carte
   const card = document.getElementById('question-card');
   card.style.animation = 'none';
-  card.offsetHeight; // reflow
+  card.offsetHeight;
   card.style.animation = '';
 }
 
 function selectChoice(choix, btn) {
-  // Désactiver tous les boutons pendant la transition
-  document.querySelectorAll('.choice-card').forEach(b => {
-    b.disabled = true;
-    b.classList.remove('selected');
-  });
+  document.querySelectorAll('.choice-card').forEach(function(b) { b.disabled = true; });
   btn.classList.add('selected');
-
-  // Ajouter les scores
-  Object.entries(choix.scores).forEach(([guilde, pts]) => {
-    scores[guilde] = (scores[guilde] || 0) + pts;
-  });
-
-  // Passer à la suite
-  setTimeout(() => {
+  scores[choix.guilde] += 1;
+  setTimeout(function() {
     questionIndex++;
     if (questionIndex < QUESTIONS.length) {
       renderQuestion();
@@ -328,46 +264,60 @@ function selectChoice(choix, btn) {
   }, 380);
 }
 
-/* ---------- RÉVÉLATION ---------- */
+/* ---------- TRANSITION ---------- */
 function goToReveal() {
   document.getElementById('progress-bar').style.width = '100%';
   showScreen('reveal');
   setTimeout(showResult, 2400);
 }
 
+/* ---------- RÉSULTAT ---------- */
 function showResult() {
-  const guilde = computeGuilde();
-  const g = GUILDES[guilde];
+  const key = computeGuilde();
+  const g = GUILDES[key];
 
   document.getElementById('result-emblem').textContent = g.embleme;
-  document.getElementById('result-name').textContent = g.nom;
-  document.getElementById('result-tagline').textContent = g.tagline;
-  document.getElementById('result-sovereignty').textContent = g.souverainete;
-  document.getElementById('result-description').textContent = g.description;
+  document.getElementById('result-name').textContent = g.titre;
+  document.getElementById('result-tagline').textContent = '';
+  document.getElementById('result-sovereignty').textContent = '';
 
-  const list = document.getElementById('result-actions');
-  list.innerHTML = '';
-  g.actions.forEach(action => {
-    const li = document.createElement('li');
-    li.textContent = action;
-    list.appendChild(li);
+  const descEl = document.getElementById('result-description');
+  descEl.innerHTML = '';
+  g.texte.forEach(function(para) {
+    const p = document.createElement('p');
+    p.style.whiteSpace = 'pre-line';
+    p.textContent = para;
+    if (para.indexOf('\n') !== -1) p.className = 'guild-highlight';
+    descEl.appendChild(p);
   });
+
+  document.querySelector('.actions-title').style.display = 'none';
+  document.getElementById('result-actions').style.display = 'none';
+
+  const ctaEl = document.getElementById('result-cta-btn');
+  ctaEl.textContent = g.bouton;
+  ctaEl.style.display = 'inline-block';
 
   showScreen('result');
 }
 
-/* ---------- CALCUL DE LA GUILDE ---------- */
+/* ---------- CALCUL DE LA GUILDE ----------
+   Règles de départage :
+   Éveillés = Gardiens         → Gardiens
+   Gardiens = Bâtisseurs       → Gardiens
+   Éveillés = Bâtisseurs       → Éveillés
+   Triple égalité              → Gardiens
+   ---------------------------------------- */
 function computeGuilde() {
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const topScore = sorted[0][1];
-  const secondScore = sorted[1][1];
+  var e = scores.eveilles;
+  var g = scores.gardiens;
+  var b = scores.batisseurs;
 
-  // Si les deux premiers sont proches (écart ≤ 2) → Souverains
-  if (topScore - secondScore <= 2 && topScore > 0) {
-    // On donne quand même les souverains seulement si plusieurs guildes sont hautes
-    const highCount = sorted.filter(([, s]) => s >= topScore - 2).length;
-    if (highCount >= 3) return 'souverains';
-  }
-
-  return sorted[0][0];
+  if (e === g && g === b) return 'gardiens';
+  if (e === g && e > b)   return 'gardiens';
+  if (g === b && g > e)   return 'gardiens';
+  if (e === b && e > g)   return 'eveilles';
+  if (e > g && e > b)     return 'eveilles';
+  if (g > e && g > b)     return 'gardiens';
+  return 'batisseurs';
 }
