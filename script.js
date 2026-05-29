@@ -48,6 +48,7 @@ const QUESTIONS = [
   /* ACTE I — L'APPEL */
   {
     etape: 'Acte I — L\'Appel',
+    titre: 'La fissure dans le royaume',
     texte: 'La grande Cité continue de tourner. Les marchands vendent. Les scribes commentent. Les intendants promettent que tout est sous contrôle.\n\nMais toi, au milieu de la place, tu vois une fissure courir le long des murs.\n\nQue fais-tu ?',
     choix: [
       { texte: 'Je m\'arrête. Je sens que quelque chose cloche, mais je ne comprends pas encore d\'où vient la faille.', guilde: 'eveilles' },
@@ -57,6 +58,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte I — L\'Appel',
+    titre: 'Le bruit des chaînes',
     texte: 'Au loin, tu entends un bruit métallique. Ce ne sont pas des chaînes visibles. Ce sont celles des habitudes, des dettes, des injonctions, des carrières subies, des peurs bien habillées.\n\nElles ne blessent pas le corps. Elles usent l\'âme.\n\nQuelle chaîne reconnais-tu en premier ?',
     choix: [
       { texte: 'La chaîne du brouillard : je ne sais plus vraiment ce qui est vrai, faux, solide ou fragile.', guilde: 'eveilles' },
@@ -66,6 +68,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte I — L\'Appel',
+    titre: 'Les messagers du vieux monde',
     texte: 'Trois messagers t\'arrêtent à la sortie de la Cité.\n\n"Ne t\'inquiète pas, nous décidons pour toi."\n"Ta sécurité dépend de ton obéissance."\n"Tu es libre, tant que tu choisis parmi nos options."\n\nComment réponds-tu ?',
     choix: [
       { texte: 'Je doute. Leurs paroles sonnent faux, mais je n\'ai pas encore les armes pour leur répondre.', guilde: 'eveilles' },
@@ -77,6 +80,7 @@ const QUESTIONS = [
   /* ACTE II — LE BROUILLARD FIAT */
   {
     etape: 'Acte II — Le Brouillard Fiat',
+    titre: 'La brume des fausses pièces',
     texte: 'Tu entres dans une vallée couverte de brume. À chaque pas, des pièces tombent du ciel. Tout le monde semble plus riche. Pourtant, les maisons deviennent inaccessibles, les paniers se vident plus vite, les anciens perdent leur épargne.\n\nUn panneau indique : "Bienvenue dans le royaume de l\'argent facile."\n\nQuelle vérité découvres-tu dans la brume ?',
     choix: [
       { texte: 'Je comprends qu\'il y a un piège, mais je ne sais pas encore comment il fonctionne.', guilde: 'eveilles' },
@@ -86,6 +90,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte II — Le Brouillard Fiat',
+    titre: 'Le coffre percé',
     texte: 'Tu arrives devant ton coffre. Tu l\'avais rempli avec ton travail, ton temps, tes efforts.\n\nMais le fond est percé.\n\nChaque année, une partie disparaît. Personne ne force la serrure. Personne ne laisse de trace. Pourtant, le trésor fuit.\n\nQue décides-tu ?',
     choix: [
       { texte: 'Je veux d\'abord comprendre qui a percé le coffre et pourquoi personne n\'en parle clairement.', guilde: 'eveilles' },
@@ -95,6 +100,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte II — Le Brouillard Fiat',
+    titre: 'La pièce orange',
     texte: 'Au cœur de la vallée, tu trouves une pièce étrange. Elle ne promet rien. Elle ne supplie personne. Elle ne change pas ses règles pour plaire au roi.\n\nElle attend simplement que tu comprennes.\n\nQue vois-tu dans cette pièce ?',
     choix: [
       { texte: 'Un artefact mystérieux. Je sens qu\'il est important, mais je ne connais pas encore son pouvoir.', guilde: 'eveilles' },
@@ -106,6 +112,7 @@ const QUESTIONS = [
   /* ACTE III — LA CLÉ */
   {
     etape: 'Acte III — La Clé',
+    titre: 'La porte sans gardien',
     texte: 'Tu arrives devant une immense porte. Aucun soldat. Aucun guichet. Aucun formulaire. Aucune autorisation.\n\nSur la pierre, une phrase est gravée :\n"Tu peux passer. Mais personne ne portera la clé à ta place."\n\nQue fais-tu ?',
     choix: [
       { texte: 'Je reste devant la porte. J\'ai envie d\'entrer, mais je ne sais pas encore comment porter cette responsabilité.', guilde: 'eveilles' },
@@ -115,6 +122,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte III — La Clé',
+    titre: 'Le sablier des générations',
     texte: 'Dans une salle silencieuse, un sablier immense laisse tomber son sable. Chaque grain est une heure de ta vie. Une décision. Un achat. Un renoncement. Une discipline. Une transmission.\n\nUne voix murmure : "Ce que tu ne construis pas aujourd\'hui devra être subi demain."\n\nQuel serment fais-tu devant le sablier ?',
     choix: [
       { texte: 'Je veux sortir de l\'urgence permanente et comprendre ce qui mérite vraiment mon temps.', guilde: 'eveilles' },
@@ -124,6 +132,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte III — La Clé',
+    titre: 'L\'inventaire du voyageur',
     texte: 'Avant de continuer, tu dois vider ton sac.\n\nTu y trouves ton temps. Ton argent. Ton attention. Tes compétences. Ton énergie. Tes relations. Tes dépendances.\n\nCertaines choses t\'appartiennent vraiment. D\'autres sont encore tenues par des mains invisibles.\n\nQue découvres-tu dans ton sac ?',
     choix: [
       { texte: 'Je découvre surtout mes dépendances. Certaines me surprennent, d\'autres m\'inquiètent.', guilde: 'eveilles' },
@@ -135,6 +144,7 @@ const QUESTIONS = [
   /* ACTE IV — LE MIROIR */
   {
     etape: 'Acte IV — Le Miroir',
+    titre: 'Le miroir qui ne ment pas',
     texte: 'Tu entres dans une pièce sans fenêtre. Au centre, un miroir.\n\nMais il ne montre pas ton visage. Il montre ta vie réelle.\n\nTon travail. Tes compromis. Tes silences. Tes choix. Tes valeurs. Tes renoncements.\n\nQue révèle le miroir ?',
     choix: [
       { texte: 'Une image trouble : je sens que quelque chose n\'est pas aligné, mais je dois encore le nommer.', guilde: 'eveilles' },
@@ -144,6 +154,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte IV — Le Miroir',
+    titre: 'Les trois sentiers',
     texte: 'Le miroir disparaît. Trois sentiers s\'ouvrent.\n\nLe premier descend vers une bibliothèque enfouie.\nLe deuxième mène vers une tour où brûle une forge intérieure.\nLe troisième rejoint une route pleine de voix, de feux et de chantiers.\n\nQuel sentier prends-tu ?',
     choix: [
       { texte: 'La bibliothèque : je veux comprendre les règles cachées du monde dans lequel je vis.', guilde: 'eveilles' },
@@ -153,6 +164,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte IV — Le Miroir',
+    titre: 'Le pont de l\'inconfort',
     texte: 'Pour quitter l\'ancien monde, tu dois traverser un pont suspendu. Derrière toi : le connu, même s\'il t\'étouffe. Devant toi : l\'inconnu, même s\'il t\'appelle.\n\nLe vent se lève. Le pont bouge. Personne ne peut traverser à ta place.\n\nComment avances-tu ?',
     choix: [
       { texte: 'Je pose un pied, puis je m\'arrête. J\'ai besoin de repères avant d\'aller plus loin.', guilde: 'eveilles' },
@@ -164,6 +176,7 @@ const QUESTIONS = [
   /* ACTE V — LA GUILDE */
   {
     etape: 'Acte V — La Guilde',
+    titre: 'Le feu au-delà de la montagne',
     texte: 'Après une longue marche, tu aperçois une lumière. Ce n\'est pas un palais. Ce n\'est pas une administration. Ce n\'est pas une armée.\n\nC\'est un feu de camp.\n\nAutour, des voyageurs parlent librement. Ils respectent les mêmes principes : vérité, responsabilité, liberté, coopération.\n\nQuelle place prends-tu autour du feu ?',
     choix: [
       { texte: 'Je reste encore à distance. J\'observe, j\'écoute, j\'essaie de comprendre les codes du campement.', guilde: 'eveilles' },
@@ -173,6 +186,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte V — La Guilde',
+    titre: 'Les trois objets',
     texte: 'Au matin, un ancien de la guilde dépose trois objets devant toi.\n\nUne carte.\nUne boussole.\nUn marteau.\n\nIl te dit : "Ne choisis pas celui qui brille. Choisis celui dont tu as besoin pour la suite."\n\nQuel objet prends-tu ?',
     choix: [
       { texte: 'La carte : je dois comprendre le territoire avant de choisir ma route.', guilde: 'eveilles' },
@@ -182,6 +196,7 @@ const QUESTIONS = [
   },
   {
     etape: 'Acte V — La Guilde',
+    titre: 'La phrase gravée dans la pierre',
     texte: 'À la fin du chemin, tu trouves une pierre blanche. Chaque voyageur y grave une phrase. Pas une promesse au monde. Un engagement envers lui-même.\n\nDans un an, quelle phrase veux-tu pouvoir graver ?',
     choix: [
       { texte: '"J\'ai enfin compris le monde qui m\'enfermait."', guilde: 'eveilles' },
@@ -235,6 +250,9 @@ function renderQuestion() {
   document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
   document.getElementById('chapter-label').textContent = q.etape;
   document.getElementById('narrative-banner').classList.add('hidden');
+  var titreEl = document.getElementById('question-titre');
+  titreEl.textContent = q.titre || '';
+  titreEl.style.display = q.titre ? 'block' : 'none';
   document.getElementById('question-text').textContent = q.texte;
 
   var container = document.getElementById('choices-container');
