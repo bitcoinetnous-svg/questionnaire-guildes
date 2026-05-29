@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Quête des Guildes — Bitcoin&Nous</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ÉCRAN D'ACCUEIL -->
+  <div id="screen-intro" class="screen active">
+    <div class="intro-container">
+      <div class="emblem">⚔</div>
+      <h1 class="title-main">La Quête des Guildes</h1>
+      <p class="subtitle">Bitcoin &amp; Nous</p>
+      <div class="separator"></div>
+      <p class="intro-text">
+        Quelque chose a changé en toi.<br />
+        Ou peut-être que quelque chose ne va plus, et tu le sais.<br /><br />
+        Ce questionnaire n'est pas un test.<br />
+        C'est un miroir.<br /><br />
+        Réponds avec ce qui résonne — pas ce qui semble juste.<br />
+        À la fin, tu découvriras à quelle guilde tu appartiens.
+      </p>
+      <button class="btn-primary" id="btn-start">Commencer la quête</button>
+      <p class="intro-footer">12 questions · ~5 minutes</p>
+    </div>
+  </div>
+
+  <!-- ÉCRAN DES QUESTIONS -->
+  <div id="screen-quest" class="screen">
+    <div class="quest-header">
+      <div class="quest-meta">
+        <span id="chapter-label" class="chapter-label"></span>
+        <span id="question-counter" class="question-counter"></span>
+      </div>
+      <div class="progress-bar-track">
+        <div id="progress-bar" class="progress-bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="quest-body">
+      <div id="narrative-banner" class="narrative-banner hidden"></div>
+
+      <div id="question-card" class="question-card">
+        <p id="question-text" class="question-text"></p>
+        <div id="choices-container" class="choices-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉCRAN DE TRANSITION -->
+  <div id="screen-reveal" class="screen">
+    <div class="reveal-container">
+      <div class="reveal-emblem" id="reveal-emblem">⚔</div>
+      <p class="reveal-caption">La guilde se révèle…</p>
+      <div class="reveal-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉCRAN DE RÉSULTAT -->
+  <div id="screen-result" class="screen">
+    <div class="result-container">
+      <p class="result-intro-label">Tu appartiens à la guilde des</p>
+      <div class="guild-emblem-large" id="result-emblem"></div>
+      <h2 class="guild-name" id="result-name"></h2>
+      <p class="guild-tagline" id="result-tagline"></p>
+      <div class="separator"></div>
+      <p class="guild-description" id="result-description"></p>
+      <div class="sovereignty-tag" id="result-sovereignty"></div>
+      <div class="separator"></div>
+      <h3 class="actions-title">Tes prochains pas</h3>
+      <ul class="actions-list" id="result-actions"></ul>
+      <div class="separator"></div>
+      <p class="cta-text">
+        Bitcoin&Nous accompagne les personnes qui veulent reprendre la main.<br />
+        Sur eux-mêmes. Sur leur argent. Sur leur vie.
+      </p>
+      <div class="result-buttons">
+        <button class="btn-secondary" id="btn-restart">Recommencer la quête</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
