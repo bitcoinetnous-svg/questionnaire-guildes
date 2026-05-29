@@ -248,6 +248,16 @@ function renderQuestion() {
 
   document.getElementById('progress-bar').style.width = Math.round((questionIndex / total) * 100) + '%';
   document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
+  /* Ambiance par acte : met à jour les CSS custom properties */
+  var actMap = { 'I': ['138','180','216'], 'II': ['180','155','60'], 'III': ['201','168','76'], 'IV': ['160','165','190'], 'V': ['200','110','48'] };
+  var actKey = (q.etape.match(/Acte ([IVX]+)/) || [])[1] || 'I';
+  var rgb = actMap[actKey] || actMap['I'];
+  var root = document.documentElement;
+  root.style.setProperty('--act-glow-r', rgb[0]);
+  root.style.setProperty('--act-glow-g', rgb[1]);
+  root.style.setProperty('--act-glow-b', rgb[2]);
+  var accentMap = { 'I': '#8ab4d8', 'II': '#c8a84c', 'III': '#c9a84c', 'IV': '#b0b8cc', 'V': '#d07030' };
+  root.style.setProperty('--act-accent', accentMap[actKey] || '#c9a84c');
   document.getElementById('chapter-label').textContent = q.etape;
   document.getElementById('narrative-banner').classList.add('hidden');
   var titreEl = document.getElementById('question-titre');
@@ -319,6 +329,8 @@ function showResult() {
   ctaEl.textContent = g.bouton;
   ctaEl.style.display = 'inline-block';
 
+  /* Applique la guilde sur l'écran résultat pour le thème CSS */
+  document.getElementById('screen-result').setAttribute('data-guilde', key);
   showScreen('result');
 }
 

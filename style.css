@@ -6,20 +6,30 @@
 }
 
 :root {
-  --bg-dark:       #0f0e0c;
-  --bg-card:       #1a1814;
-  --bg-card-hover: #222017;
-  --border:        #2e2b24;
-  --border-hover:  #c9a84c;
-  --gold:          #c9a84c;
-  --gold-light:    #e8c76a;
-  --text-primary:  #e8e0d0;
-  --text-secondary:#9a9080;
-  --text-muted:    #5a5448;
-  --accent-red:    #8b3a3a;
-  --radius:        8px;
-  --radius-lg:     14px;
-  --transition:    0.22s ease;
+  --bg-dark:        #0f0e0c;
+  --bg-card:        #1a1814;
+  --bg-card-hover:  #222017;
+  --border:         #2e2b24;
+  --border-hover:   #c9a84c;
+  --gold:           #c9a84c;
+  --gold-light:     #e8c76a;
+  --text-primary:   #e8e0d0;
+  --text-secondary: #9a9080;
+  --text-muted:     #5a5448;
+  --radius:         8px;
+  --radius-lg:      14px;
+  --transition:     0.22s ease;
+
+  /* Couleurs des guildes */
+  --eveilles-color:   #8ab4d8;
+  --gardiens-color:   #c9a84c;
+  --batisseurs-color: #d07030;
+
+  /* Ambiance de l'acte courant (mis à jour par JS) */
+  --act-accent:     var(--gold);
+  --act-glow-r:     201;
+  --act-glow-g:     168;
+  --act-glow-b:     76;
 }
 
 html, body {
@@ -28,6 +38,94 @@ html, body {
   color: var(--text-primary);
   font-family: 'Georgia', 'Times New Roman', serif;
   line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ===== COUCHE ATMOSPHÉRIQUE (brume de fond, fixe) ===== */
+.ambient-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Chaque blob est un halo diffus qui dérive lentement */
+.fog-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.fog-1 {
+  width: 70vw;
+  height: 70vw;
+  max-width: 600px;
+  max-height: 600px;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+  animation: driftBlob1 28s ease-in-out infinite alternate;
+}
+
+.fog-2 {
+  width: 60vw;
+  height: 60vw;
+  max-width: 500px;
+  max-height: 500px;
+  bottom: -10%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(60,40,110,0.07) 0%, transparent 70%);
+  animation: driftBlob2 22s ease-in-out infinite alternate;
+}
+
+.fog-3 {
+  width: 40vw;
+  height: 40vw;
+  max-width: 360px;
+  max-height: 360px;
+  top: 40%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(100,80,40,0.04) 0%, transparent 70%);
+  animation: driftBlob3 35s ease-in-out infinite alternate;
+}
+
+@keyframes driftBlob1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(12vw, 8vh) scale(1.2); }
+}
+@keyframes driftBlob2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-8vw, -6vh) scale(1.15); }
+}
+@keyframes driftBlob3 {
+  from { transform: translate(-50%, 0) scale(1); }
+  to   { transform: translate(-40%, -10vh) scale(1.3); opacity: 0.4; }
+}
+
+/* Texture de bruit subtile (réseau de lignes très fines) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.008) 0px,
+      rgba(255,255,255,0.008) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ===== SCREENS ===== */
@@ -35,6 +133,8 @@ html, body {
   display: none;
   min-height: 100vh;
   padding: 24px 16px 40px;
+  position: relative;
+  z-index: 1;
 }
 
 .screen.active {
@@ -56,12 +156,13 @@ html, body {
   color: var(--gold);
   margin-bottom: 16px;
   display: block;
+  filter: drop-shadow(0 0 16px rgba(201,168,76,0.4));
   animation: pulse 3s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.7; transform: scale(1.06); }
+  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 12px rgba(201,168,76,0.3)); }
+  50%       { opacity: 0.8; transform: scale(1.06); filter: drop-shadow(0 0 24px rgba(201,168,76,0.6)); }
 }
 
 .title-main {
@@ -69,7 +170,7 @@ html, body {
   font-weight: normal;
   letter-spacing: 0.05em;
   color: var(--gold-light);
-  text-shadow: 0 0 30px rgba(201, 168, 76, 0.25);
+  text-shadow: 0 0 40px rgba(201,168,76,0.35), 0 0 80px rgba(201,168,76,0.1);
 }
 
 .subtitle {
@@ -101,6 +202,55 @@ html, body {
   letter-spacing: 0.1em;
 }
 
+/* ===== FIGURES DES GUILDES (écran intro) ===== */
+.guild-figures {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 5vw, 48px);
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+
+.guild-figure-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.65;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.guild-figure-wrap:hover {
+  opacity: 1;
+}
+
+.guild-sym {
+  width: 44px;
+  height: 66px;
+  animation: floatSym 5s ease-in-out infinite;
+}
+
+.guild-figure-wrap:nth-child(2) .guild-sym { animation-delay: -1.8s; }
+.guild-figure-wrap:nth-child(3) .guild-sym { animation-delay: -3.4s; }
+
+@keyframes floatSym {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* Couleur par guilde */
+.sym-eveilles  { color: var(--eveilles-color); filter: drop-shadow(0 0 8px rgba(138,180,216,0.35)); }
+.sym-gardiens  { color: var(--gardiens-color); filter: drop-shadow(0 0 8px rgba(201,168,76,0.4)); }
+.sym-batisseurs{ color: var(--batisseurs-color); filter: drop-shadow(0 0 8px rgba(208,112,48,0.4)); }
+
+.guild-fig-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 /* ===== BOUTONS ===== */
 .btn-primary {
   display: inline-block;
@@ -114,11 +264,13 @@ html, body {
   cursor: pointer;
   border-radius: var(--radius);
   transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+  position: relative;
+  z-index: 2;
 }
 
 .btn-primary:hover {
-  background: rgba(201, 168, 76, 0.1);
-  box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+  background: rgba(201,168,76,0.1);
+  box-shadow: 0 0 24px rgba(201,168,76,0.25), inset 0 0 12px rgba(201,168,76,0.05);
 }
 
 .btn-secondary {
@@ -132,6 +284,8 @@ html, body {
   cursor: pointer;
   border-radius: var(--radius);
   transition: border-color var(--transition), color var(--transition);
+  position: relative;
+  z-index: 2;
 }
 
 .btn-secondary:hover {
@@ -149,6 +303,8 @@ html, body {
   width: 100%;
   max-width: 620px;
   margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
 }
 
 .quest-meta {
@@ -162,7 +318,9 @@ html, body {
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  /* Suit la couleur de l'acte courant */
+  color: var(--act-accent);
+  transition: color 1s ease;
 }
 
 .question-counter {
@@ -182,22 +340,40 @@ html, body {
 .progress-bar-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  /* La couleur de la barre suit aussi l'acte */
+  background: linear-gradient(90deg, var(--act-accent), color-mix(in srgb, var(--act-accent) 60%, white));
   border-radius: 999px;
-  transition: width 0.5s ease;
-  box-shadow: 0 0 8px rgba(201, 168, 76, 0.4);
+  transition: width 0.5s ease, background 1s ease;
+  box-shadow: 0 0 8px rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.4);
+}
+
+/* ===== OVERLAY D'AMBIANCE PAR ACTE ===== */
+.act-ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Fond radial coloré, mis à jour par JS */
+  background: radial-gradient(
+    ellipse 55% 50% at 50% 50%,
+    rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.07) 0%,
+    transparent 100%
+  );
+  transition: opacity 1s ease;
 }
 
 /* ===== QUEST BODY ===== */
 .quest-body {
   width: 100%;
   max-width: 620px;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===== NARRATIVE BANNER ===== */
 .narrative-banner {
-  background: rgba(201, 168, 76, 0.06);
-  border: 1px solid rgba(201, 168, 76, 0.2);
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
   border-radius: var(--radius);
   padding: 14px 20px;
   font-size: 0.9rem;
@@ -208,17 +384,15 @@ html, body {
   text-align: center;
 }
 
-.narrative-banner.hidden {
-  display: none;
-}
+.narrative-banner.hidden { display: none; }
 
 /* ===== QUESTION CARD ===== */
 .question-card {
-  animation: fadeSlide 0.35s ease;
+  animation: fadeSlide 0.4s ease both;
 }
 
 @keyframes fadeSlide {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -226,15 +400,16 @@ html, body {
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--act-accent);
   margin-bottom: 10px;
+  transition: color 1s ease;
 }
 
 .question-text {
   font-size: clamp(1rem, 2.5vw, 1.15rem);
   color: var(--text-primary);
   margin-bottom: 24px;
-  line-height: 1.65;
+  line-height: 1.7;
   white-space: pre-line;
 }
 
@@ -244,6 +419,7 @@ html, body {
   gap: 12px;
 }
 
+/* Carte de réponse avec halo au survol */
 .choice-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -255,21 +431,46 @@ html, body {
   color: var(--text-secondary);
   text-align: left;
   line-height: 1.55;
-  transition: border-color var(--transition), background var(--transition), color var(--transition), transform var(--transition);
   width: 100%;
+  position: relative;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.choice-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  background: linear-gradient(135deg,
+    rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.08),
+    transparent 60%
+  );
+  transition: opacity var(--transition);
+  pointer-events: none;
 }
 
 .choice-card:hover {
-  border-color: var(--border-hover);
+  border-color: var(--act-accent);
   background: var(--bg-card-hover);
   color: var(--text-primary);
+  box-shadow: 0 0 16px rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.15),
+              inset 0 0 0 1px rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.05);
   transform: translateX(4px);
 }
 
+.choice-card:hover::before { opacity: 1; }
+
 .choice-card.selected {
-  border-color: var(--gold);
-  background: rgba(201, 168, 76, 0.08);
+  border-color: var(--act-accent);
+  background: rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.08);
   color: var(--gold-light);
+  box-shadow: 0 0 20px rgba(var(--act-glow-r), var(--act-glow-g), var(--act-glow-b), 0.2);
 }
 
 /* ===== REVEAL SCREEN ===== */
@@ -282,16 +483,17 @@ html, body {
 }
 
 .reveal-emblem {
-  font-size: 4rem;
+  font-size: 4.5rem;
   color: var(--gold);
   animation: revealPulse 1.2s ease-in-out infinite;
   display: block;
   margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px rgba(201,168,76,0.5));
 }
 
 @keyframes revealPulse {
-  0%, 100% { opacity: 0.4; transform: scale(0.95); }
-  50%       { opacity: 1;   transform: scale(1.05); }
+  0%, 100% { opacity: 0.3; transform: scale(0.92); filter: drop-shadow(0 0 10px rgba(201,168,76,0.3)); }
+  50%       { opacity: 1;   transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(201,168,76,0.7)); }
 }
 
 .reveal-caption {
@@ -330,11 +532,43 @@ html, body {
   padding-top: 40px;
 }
 
+/* Halo coloré derrière le résultat */
+.result-halo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+#screen-result.active .result-halo {
+  opacity: 1;
+}
+
+/* Couleurs du halo selon la guilde */
+#screen-result[data-guilde="eveilles"] .result-halo {
+  background: radial-gradient(ellipse 60% 50% at 50% 30%,
+    rgba(138,180,216,0.08) 0%, transparent 70%);
+}
+
+#screen-result[data-guilde="gardiens"] .result-halo {
+  background: radial-gradient(ellipse 60% 50% at 50% 30%,
+    rgba(201,168,76,0.09) 0%, transparent 70%);
+}
+
+#screen-result[data-guilde="batisseurs"] .result-halo {
+  background: radial-gradient(ellipse 60% 50% at 50% 30%,
+    rgba(208,112,48,0.09) 0%, transparent 70%);
+}
+
 .result-container {
   max-width: 600px;
   width: 100%;
   text-align: center;
-  animation: fadeSlide 0.5s ease;
+  animation: fadeSlide 0.6s ease both;
+  position: relative;
+  z-index: 2;
 }
 
 .result-intro-label {
@@ -345,19 +579,43 @@ html, body {
   margin-bottom: 16px;
 }
 
+/* Emblème de la guilde avec glow coloré selon la guilde */
 .guild-emblem-large {
-  font-size: 4.5rem;
+  font-size: 5rem;
   margin-bottom: 12px;
   display: block;
+  animation: resultEmblemeAppear 0.8s ease both 0.3s;
+}
+
+@keyframes resultEmblemeAppear {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+#screen-result[data-guilde="eveilles"] .guild-emblem-large {
+  filter: drop-shadow(0 0 20px rgba(138,180,216,0.6)) drop-shadow(0 0 40px rgba(138,180,216,0.3));
+}
+
+#screen-result[data-guilde="gardiens"] .guild-emblem-large {
+  filter: drop-shadow(0 0 20px rgba(201,168,76,0.7)) drop-shadow(0 0 40px rgba(201,168,76,0.3));
+}
+
+#screen-result[data-guilde="batisseurs"] .guild-emblem-large {
+  filter: drop-shadow(0 0 20px rgba(208,112,48,0.7)) drop-shadow(0 0 40px rgba(208,112,48,0.3));
 }
 
 .guild-name {
-  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
   font-weight: normal;
   color: var(--gold-light);
   letter-spacing: 0.04em;
   margin-bottom: 8px;
+  animation: fadeSlide 0.6s ease both 0.5s;
 }
+
+#screen-result[data-guilde="eveilles"] .guild-name { color: #b8d4ee; text-shadow: 0 0 30px rgba(138,180,216,0.3); }
+#screen-result[data-guilde="gardiens"] .guild-name  { color: var(--gold-light); text-shadow: 0 0 30px rgba(201,168,76,0.3); }
+#screen-result[data-guilde="batisseurs"] .guild-name { color: #e09060; text-shadow: 0 0 30px rgba(208,112,48,0.3); }
 
 .guild-tagline {
   font-size: 1rem;
@@ -372,6 +630,29 @@ html, body {
   line-height: 1.8;
   text-align: left;
 }
+
+.guild-description p {
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.guild-description p:last-child { margin-bottom: 0; }
+
+/* Bloc force / risque / quête */
+.guild-highlight {
+  background: rgba(201,168,76,0.05);
+  border-left: 2px solid var(--gold);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.92rem !important;
+  color: var(--text-secondary);
+}
+
+#screen-result[data-guilde="eveilles"] .guild-highlight  { border-left-color: var(--eveilles-color); }
+#screen-result[data-guilde="batisseurs"] .guild-highlight { border-left-color: var(--batisseurs-color); }
 
 .sovereignty-tag {
   display: inline-block;
@@ -425,28 +706,6 @@ html, body {
   font-style: italic;
 }
 
-.guild-description p {
-  font-size: 0.98rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  text-align: left;
-  margin-bottom: 12px;
-}
-
-.guild-description p:last-child {
-  margin-bottom: 0;
-}
-
-/* Bloc force / risque / quête */
-.guild-highlight {
-  background: rgba(201, 168, 76, 0.05);
-  border-left: 2px solid var(--gold);
-  padding: 10px 14px;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 0.92rem !important;
-  color: var(--text-secondary);
-}
-
 .result-buttons {
   display: flex;
   justify-content: center;
@@ -467,6 +726,26 @@ html, body {
   }
 
   .guild-emblem-large {
-    font-size: 3.5rem;
+    font-size: 4rem;
+  }
+
+  .guild-figures {
+    gap: 20px;
+  }
+
+  .guild-sym {
+    width: 36px;
+    height: 54px;
+  }
+}
+
+/* Réduit les animations si l'utilisateur le préfère */
+@media (prefers-reduced-motion: reduce) {
+  .fog-blob,
+  .guild-sym,
+  .emblem,
+  .reveal-emblem,
+  .guild-emblem-large {
+    animation: none !important;
   }
 }
