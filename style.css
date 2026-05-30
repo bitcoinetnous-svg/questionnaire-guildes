@@ -45,7 +45,7 @@ html, body {
 .bg-layer {
   position: fixed;
   inset: 0;
-  z-index: -3;
+  z-index: 1;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -61,7 +61,7 @@ html, body {
 #bg-overlay {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: 2;
   background: rgba(0, 0, 0, 0.58);
   pointer-events: none;
 }
@@ -71,7 +71,7 @@ html, body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 3;
   overflow: hidden;
 }
 
@@ -150,7 +150,7 @@ body::after {
       transparent 40px
     );
   pointer-events: none;
-  z-index: 0;
+  z-index: 4;
 }
 
 /* ===== SCREENS ===== */
@@ -159,7 +159,7 @@ body::after {
   min-height: 100vh;
   padding: 24px 16px 40px;
   position: relative;
-  z-index: 1;
+  z-index: 5;
 }
 
 .screen.active {
