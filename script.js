@@ -2,6 +2,30 @@
    La Quête des Guildes — Bitcoin&Nous
    ============================================================ */
 
+/* ---------- IMAGES PAR ACTE ---------- */
+var IMAGES = {
+  'intro':  'assets/images/acte-1-appel.png',
+  'I':      'assets/images/acte-1-appel.png',
+  'II':     'assets/images/acte-2-brouillard-fiat.png',
+  'III':    'assets/images/acte-3-cle.png',
+  'IV':     'assets/images/acte-4-miroir.png',
+  'V':      'assets/images/acte-5-guilde.png',
+  'result': 'assets/images/acte-5-guilde.png',
+};
+var _activeBgLayer = 'a';
+
+function setBackground(key) {
+  var url = IMAGES[key];
+  if (!url) return;
+  var next = _activeBgLayer === 'a' ? 'b' : 'a';
+  var nextEl = document.getElementById('bg-layer-' + next);
+  var prevEl = document.getElementById('bg-layer-' + _activeBgLayer);
+  nextEl.style.backgroundImage = 'url(' + url + ')';
+  nextEl.classList.add('active');
+  prevEl.classList.remove('active');
+  _activeBgLayer = next;
+}
+
 /* ---------- 3 GUILDES ---------- */
 const GUILDES = {
   eveilles: {
@@ -258,6 +282,7 @@ function renderQuestion() {
   root.style.setProperty('--act-glow-b', rgb[2]);
   var accentMap = { 'I': '#8ab4d8', 'II': '#c8a84c', 'III': '#c9a84c', 'IV': '#b0b8cc', 'V': '#d07030' };
   root.style.setProperty('--act-accent', accentMap[actKey] || '#c9a84c');
+  setBackground(actKey);
   document.getElementById('chapter-label').textContent = q.etape;
   document.getElementById('narrative-banner').classList.add('hidden');
   var titreEl = document.getElementById('question-titre');
@@ -331,6 +356,7 @@ function showResult() {
 
   /* Applique la guilde sur l'écran résultat pour le thème CSS */
   document.getElementById('screen-result').setAttribute('data-guilde', key);
+  setBackground('result');
   showScreen('result');
 }
 
@@ -354,3 +380,6 @@ function computeGuilde() {
   if (g > e && g > b)     return 'gardiens';
   return 'batisseurs';
 }
+
+/* ---------- INIT ---------- */
+setBackground('intro');
