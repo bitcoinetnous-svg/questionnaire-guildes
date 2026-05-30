@@ -230,12 +230,17 @@ const QUESTIONS = [
   },
 ];
 
+/* ---------- CONSTANTE DE TRANSITION ---------- */
+var TRANSITION_DURATION = 1000; /* ms — durée totale entre deux questions */
+
 /* ---------- ÉTAT ---------- */
-let scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
-let questionIndex = 0;
+var scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
+var questionIndex = 0;
+var answerHistory = []; /* { questionIndex, guilde } */
+var _transitioning = false;
 
 /* ---------- DOM ---------- */
-const screens = {
+var screens = {
   intro:  document.getElementById('screen-intro'),
   quest:  document.getElementById('screen-quest'),
   reveal: document.getElementById('screen-reveal'),
@@ -252,27 +257,67 @@ function showScreen(name) {
 document.getElementById('btn-start').addEventListener('click', function() {
   resetState();
   showScreen('quest');
-  renderQuestion();
+  renderQuestion(false);
 });
 
 document.getElementById('btn-restart').addEventListener('click', function() {
   resetState();
   showScreen('intro');
+  setBackground('intro');
+});
+
+/* Retour depuis l'écran résultat → retour à la Q15 */
+document.getElementById('btn-back-result').addEventListener('click', function() {
+  goBackFromResult();
 });
 
 function resetState() {
   scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
   questionIndex = 0;
+  answerHistory = [];
+  _transitioning = false;
+}
+
+/* ---------- BOUTON RETOUR (pendant le questionnaire) ---------- */
+function updateBackButton() {
+  var btn = document.getElementById('btn-back');
+  if (questionIndex > 0) {
+    btn.classList.remove('hidden');
+  } else {
+    btn.classList.add('hidden');
+  }
+}
+
+document.getElementById('btn-back').addEventListener('click', function() {
+  if (_transitioning) return;
+  goBack();
+});
+
+function goBack() {
+  if (answerHistory.length === 0) return;
+  var last = answerHistory.pop();
+  scores[last.guilde] = Math.max(0, scores[last.guilde] - 1);
+  questionIndex = last.questionIndex;
+  renderQuestion(false);
+}
+
+function goBackFromResult() {
+  if (answerHistory.length === 0) return;
+  var last = answerHistory.pop();
+  scores[last.guilde] = Math.max(0, scores[last.guilde] - 1);
+  questionIndex = last.questionIndex;
+  showScreen('quest');
+  renderQuestion(false);
 }
 
 /* ---------- RENDU D'UNE QUESTION ---------- */
-function renderQuestion() {
+function renderQuestion(withTransitionIn) {
   var q = QUESTIONS[questionIndex];
   var total = QUESTIONS.length;
 
   document.getElementById('progress-bar').style.width = Math.round((questionIndex / total) * 100) + '%';
   document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
-  /* Ambiance par acte : met à jour les CSS custom properties */
+
   var actMap = { 'I': ['138','180','216'], 'II': ['180','155','60'], 'III': ['201','168','76'], 'IV': ['160','165','190'], 'V': ['200','110','48'] };
   var actKey = (q.etape.match(/Acte ([IVX]+)/) || [])[1] || 'I';
   var rgb = actMap[actKey] || actMap['I'];
@@ -285,42 +330,82 @@ function renderQuestion() {
   setBackground(actKey);
   document.getElementById('chapter-label').textContent = q.etape;
   document.getElementById('narrative-banner').classList.add('hidden');
-  var titreEl = document.getElementById('question-titre');
-  titreEl.textContent = q.titre || '';
-  titreEl.style.display = q.titre ? 'block' : 'none';
-  document.getElementById('question-text').textContent = q.texte;
 
-  var container = document.getElementById('choices-container');
-  container.innerHTML = '';
-  q.choix.forEach(function(choix) {
-    var btn = document.createElement('button');
-    btn.className = 'choice-card';
-    btn.textContent = choix.texte;
-    btn.addEventListener('click', function() { selectChoice(choix, btn); });
-    container.appendChild(btn);
-  });
+  updateBackButton();
 
   var card = document.getElementById('question-card');
-  card.style.animation = 'none';
-  card.offsetHeight;
-  card.style.animation = '';
+
+  function fillCard() {
+    var titreEl = document.getElementById('question-titre');
+    titreEl.textContent = q.titre || '';
+    titreEl.style.display = q.titre ? 'block' : 'none';
+    document.getElementById('question-text').textContent = q.texte;
+
+    var container = document.getElementById('choices-container');
+    container.innerHTML = '';
+    q.choix.forEach(function(choix) {
+      var btn = document.createElement('button');
+      btn.className = 'choice-card';
+      btn.textContent = choix.texte;
+      btn.addEventListener('click', function() { selectChoice(choix, btn); });
+      container.appendChild(btn);
+    });
+  }
+
+  if (withTransitionIn) {
+    /* Phase entrée : la carte remonte et apparaît */
+    card.classList.add('entering');
+    card.classList.remove('leaving');
+    fillCard();
+    card.offsetHeight; /* force reflow */
+    card.classList.remove('entering');
+  } else {
+    fillCard();
+    card.classList.remove('leaving', 'entering');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = '';
+  }
 }
 
-function selectChoice(choix, btn) {
+function selectChoice(choix, clickedBtn) {
+  if (_transitioning) return;
+  _transitioning = true;
+
   document.querySelectorAll('.choice-card').forEach(function(b) { b.disabled = true; });
-  btn.classList.add('selected');
+  clickedBtn.classList.add('selected');
+
+  answerHistory.push({ questionIndex: questionIndex, guilde: choix.guilde });
   scores[choix.guilde] += 1;
+
+  var half = TRANSITION_DURATION / 2; /* ~500 ms par demi-phase */
+  var card = document.getElementById('question-card');
+  var overlay = document.getElementById('bg-overlay');
+
+  /* Phase 1 : la carte descend et disparaît, l'image respire */
+  card.classList.add('leaving');
+  overlay.classList.add('breathe');
+
   setTimeout(function() {
     questionIndex++;
     if (questionIndex < QUESTIONS.length) {
-      renderQuestion();
+      /* Prépare la nouvelle question sans animation de carte */
+      renderQuestion(false);
+      /* Phase 2 : l'image se ré-assombrit, la carte remonte */
+      overlay.classList.remove('breathe');
+      card.classList.add('entering');
+      card.offsetHeight;
+      card.classList.remove('entering', 'leaving');
+      _transitioning = false;
     } else {
+      overlay.classList.remove('breathe');
+      _transitioning = false;
       goToReveal();
     }
-  }, 380);
+  }, half);
 }
 
-/* ---------- TRANSITION ---------- */
+/* ---------- VERS L'ÉCRAN DE RÉVÉLATION ---------- */
 function goToReveal() {
   document.getElementById('progress-bar').style.width = '100%';
   showScreen('reveal');
@@ -354,7 +439,6 @@ function showResult() {
   ctaEl.textContent = g.bouton;
   ctaEl.style.display = 'inline-block';
 
-  /* Applique la guilde sur l'écran résultat pour le thème CSS */
   document.getElementById('screen-result').setAttribute('data-guilde', key);
   setBackground('result');
   showScreen('result');
