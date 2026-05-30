@@ -66,6 +66,82 @@ html, body {
   pointer-events: none;
 }
 
+/* ===== ÉCRAN DE TRANSITION IMMERSIF ===== */
+.tr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.tr-overlay.visible {
+  opacity: 1;
+}
+
+.tr-content {
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+}
+
+.tr-act {
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--act-accent);
+  margin-bottom: 20px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.9);
+  transition: color 0.6s ease;
+}
+
+.tr-episode {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232,224,208,0.5);
+  margin-bottom: 24px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+}
+
+.tr-title {
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  color: #f2e8d6;
+  text-shadow:
+    0 2px 20px rgba(0,0,0,0.95),
+    0 0 60px rgba(0,0,0,0.7);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.tr-signature {
+  position: absolute;
+  bottom: 36px;
+  right: 44px;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+}
+
+@media (max-width: 480px) {
+  .tr-title { font-size: 1.4rem; }
+  .tr-signature { bottom: 20px; right: 20px; font-size: 0.65rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-overlay { transition: none; }
+}
+
 /* ===== COUCHE ATMOSPHÉRIQUE (brume de fond, fixe) ===== */
 .ambient-layer {
   position: fixed;
@@ -205,11 +281,12 @@ body::after {
 }
 
 .subtitle {
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 6px;
+  color: var(--gold);
+  margin-top: 8px;
+  text-shadow: 0 0 20px rgba(201,168,76,0.3);
 }
 
 .separator {
@@ -420,25 +497,23 @@ body::after {
 
 /* ===== QUESTION CARD ===== */
 .question-card {
-  animation: fadeSlide 0.4s ease both;
   background: rgba(15, 14, 12, 0.62);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(201,168,76,0.1);
   border-radius: var(--radius-lg);
   padding: 28px 28px 24px;
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Transition entre questions */
-.question-card.leaving {
+.question-card.card-exit {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(24px);
 }
 
-.question-card.entering {
+.question-card.card-enter {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-18px);
 }
 
 @keyframes fadeSlide {
@@ -446,13 +521,20 @@ body::after {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Overlay de respiration (image plus visible entre deux questions) */
+/* L'overlay s'allège pendant la transition pour révéler l'image */
 #bg-overlay {
-  transition: opacity 0.8s ease;
+  transition: opacity 0.5s ease;
 }
 
 #bg-overlay.breathe {
-  opacity: 0.08;
+  opacity: 0.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .question-card,
+  .question-card.card-exit,
+  .question-card.card-enter { transition: none; opacity: 1; transform: none; }
+  #bg-overlay { transition: none; }
 }
 
 /* ===== BOUTON RETOUR ===== */

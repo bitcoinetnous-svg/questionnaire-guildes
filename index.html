@@ -20,6 +20,16 @@
   <div class="fog-blob fog-3"></div>
 </div>
 
+<!-- ÉCRAN DE TRANSITION IMMERSIF (superposé, z-index élevé) -->
+<div id="tr-screen" class="tr-overlay" aria-live="polite" aria-hidden="true">
+  <div class="tr-content">
+    <p class="tr-act" id="tr-act"></p>
+    <p class="tr-episode" id="tr-episode"></p>
+    <h2 class="tr-title" id="tr-title"></h2>
+  </div>
+  <p class="tr-signature" aria-hidden="true">BITCOIN &amp; NOUS</p>
+</div>
+
   <!-- ÉCRAN D'ACCUEIL -->
   <div id="screen-intro" class="screen active">
     <div class="intro-container">
@@ -105,7 +115,6 @@
     </div>
 
     <div class="quest-body">
-      <!-- Overlay coloré par acte, mis à jour par JS -->
       <div id="act-ambient" class="act-ambient" aria-hidden="true"></div>
       <div id="narrative-banner" class="narrative-banner hidden"></div>
 
@@ -120,20 +129,8 @@
     </div>
   </div>
 
-  <!-- ÉCRAN DE TRANSITION -->
-  <div id="screen-reveal" class="screen">
-    <div class="reveal-container">
-      <div class="reveal-emblem" id="reveal-emblem">⚔</div>
-      <p class="reveal-caption">La guilde se révèle…</p>
-      <div class="reveal-dots">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-  </div>
-
   <!-- ÉCRAN DE RÉSULTAT -->
   <div id="screen-result" class="screen">
-    <!-- Halo décoratif propre à la guilde révélée -->
     <div id="result-halo" class="result-halo" aria-hidden="true"></div>
     <div class="result-container">
       <p class="result-intro-label">Tu appartiens à</p>
