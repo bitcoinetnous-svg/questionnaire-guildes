@@ -427,11 +427,73 @@ body::after {
   border: 1px solid rgba(201,168,76,0.1);
   border-radius: var(--radius-lg);
   padding: 28px 28px 24px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* Transition entre questions */
+.question-card.leaving {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.question-card.entering {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Overlay de respiration (image plus visible entre deux questions) */
+#bg-overlay {
+  transition: opacity 0.35s ease;
+}
+
+#bg-overlay.breathe {
+  opacity: 0.25;
+}
+
+/* ===== BOUTON RETOUR ===== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  padding: 7px 14px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.btn-back:hover {
+  color: var(--text-secondary);
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.05);
+}
+
+.btn-back.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .question-card,
+  .question-card.leaving,
+  .question-card.entering {
+    transition: none;
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  #bg-overlay { transition: none; }
 }
 
 .question-titre {
@@ -752,7 +814,8 @@ body::after {
 
 .result-buttons {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 24px;
