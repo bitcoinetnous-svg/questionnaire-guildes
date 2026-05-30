@@ -234,7 +234,7 @@ const QUESTIONS = [
    CONSTANTES DE TRANSITION
    ============================================================ */
 var CARD_FADE_DURATION       = 300;  /* ms — fondu sortant de la carte */
-var TRANSITION_SCREEN_DURATION = 1400; /* ms — durée d'affichage de l'écran intermédiaire */
+var TRANSITION_SCREEN_DURATION = 2300; /* ms — durée d'affichage de l'écran intermédiaire */
 var OVERLAY_FADE_DURATION    = 500;  /* ms — fondu de l'overlay de transition */
 
 /* ============================================================
