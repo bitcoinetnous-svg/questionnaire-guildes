@@ -230,20 +230,27 @@ const QUESTIONS = [
   },
 ];
 
-/* ---------- CONSTANTE DE TRANSITION ---------- */
-var TRANSITION_DURATION = 2500; /* ms — durée totale entre deux questions */
+/* ============================================================
+   CONSTANTES DE TRANSITION
+   ============================================================ */
+var CARD_FADE_DURATION       = 300;  /* ms — fondu sortant de la carte */
+var TRANSITION_SCREEN_DURATION = 1400; /* ms — durée d'affichage de l'écran intermédiaire */
+var OVERLAY_FADE_DURATION    = 500;  /* ms — fondu de l'overlay de transition */
 
-/* ---------- ÉTAT ---------- */
-var scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
+/* ============================================================
+   ÉTAT
+   ============================================================ */
+var scores        = { eveilles: 0, gardiens: 0, batisseurs: 0 };
 var questionIndex = 0;
 var answerHistory = []; /* { questionIndex, guilde } */
 var _transitioning = false;
 
-/* ---------- DOM ---------- */
+/* ============================================================
+   DOM
+   ============================================================ */
 var screens = {
   intro:  document.getElementById('screen-intro'),
   quest:  document.getElementById('screen-quest'),
-  reveal: document.getElementById('screen-reveal'),
   result: document.getElementById('screen-result'),
 };
 
@@ -253,32 +260,136 @@ function showScreen(name) {
   window.scrollTo(0, 0);
 }
 
-/* ---------- INTRO ---------- */
-document.getElementById('btn-start').addEventListener('click', function() {
-  resetState();
-  showScreen('quest');
-  renderQuestion(false);
-});
+/* ============================================================
+   THÈME PAR ACTE
+   ============================================================ */
+var ACT_RGB    = { 'I':['138','180','216'], 'II':['180','155','60'], 'III':['201','168','76'], 'IV':['160','165','190'], 'V':['200','110','48'] };
+var ACT_ACCENT = { 'I':'#8ab4d8', 'II':'#c8a84c', 'III':'#c9a84c', 'IV':'#b0b8cc', 'V':'#d07030' };
 
-document.getElementById('btn-restart').addEventListener('click', function() {
-  resetState();
-  showScreen('intro');
-  setBackground('intro');
-});
-
-/* Retour depuis l'écran résultat → retour à la Q15 */
-document.getElementById('btn-back-result').addEventListener('click', function() {
-  goBackFromResult();
-});
-
-function resetState() {
-  scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };
-  questionIndex = 0;
-  answerHistory = [];
-  _transitioning = false;
+function applyActTheme(actKey) {
+  var rgb  = ACT_RGB[actKey]    || ACT_RGB['I'];
+  var root = document.documentElement;
+  root.style.setProperty('--act-glow-r', rgb[0]);
+  root.style.setProperty('--act-glow-g', rgb[1]);
+  root.style.setProperty('--act-glow-b', rgb[2]);
+  root.style.setProperty('--act-accent', ACT_ACCENT[actKey] || '#c9a84c');
 }
 
-/* ---------- BOUTON RETOUR (pendant le questionnaire) ---------- */
+function actKeyOf(q) {
+  return (q.etape.match(/Acte ([IVX]+)/) || [])[1] || 'I';
+}
+
+/* ============================================================
+   ÉCRAN DE TRANSITION IMMERSIF
+   ============================================================ */
+function showTransitionScreen(nextIndex, isResult, onDone) {
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var card    = document.getElementById('question-card');
+  var bgOvl   = document.getElementById('bg-overlay');
+  var trScreen = document.getElementById('tr-screen');
+
+  /* --- Préparer le contenu de la transition --- */
+  if (isResult) {
+    setBackground('result');
+    document.getElementById('tr-act').textContent     = 'La quête s\'achève';
+    document.getElementById('tr-episode').textContent = '';
+    document.getElementById('tr-title').textContent   = 'Révélation de ta Guilde';
+  } else {
+    var q      = QUESTIONS[nextIndex];
+    var actKey = actKeyOf(q);
+    applyActTheme(actKey);
+    setBackground(actKey);
+    document.getElementById('tr-act').textContent     = q.etape;
+    document.getElementById('tr-episode').textContent = 'Épreuve ' + (nextIndex + 1) + ' / ' + QUESTIONS.length;
+    document.getElementById('tr-title').textContent   = q.titre || '';
+  }
+
+  /* --- Mode réduit : ignorer les animations, passer directement --- */
+  if (reducedMotion) {
+    onDone();
+    return;
+  }
+
+  /* --- Phase 1 : fondu sortant de la carte (si on est sur l'écran questionnaire) --- */
+  var fromQuest = screens.quest.classList.contains('active');
+  if (fromQuest) {
+    card.classList.add('card-exit');
+  }
+
+  setTimeout(function() {
+
+    /* --- Phase 2 : alléger l'overlay + afficher l'écran de transition --- */
+    bgOvl.classList.add('breathe');
+    trScreen.setAttribute('aria-hidden', 'false');
+    trScreen.classList.add('visible');
+
+    /* Si on vient de l'accueil, passer sur l'écran questionnaire pendant que la transition le couvre */
+    if (!fromQuest) showScreen('quest');
+
+    /* --- Phase 3 : maintenir l'écran de transition --- */
+    setTimeout(function() {
+
+      /* Préparer la prochaine question pendant que la transition est encore visible */
+      if (!isResult) {
+        questionIndex = nextIndex;
+        fillCard(QUESTIONS[nextIndex]);
+        updateProgress();
+        updateBackButton();
+      }
+
+      /* --- Phase 4 : faire disparaître l'écran de transition --- */
+      trScreen.classList.remove('visible');
+
+      setTimeout(function() {
+        trScreen.setAttribute('aria-hidden', 'true');
+        bgOvl.classList.remove('breathe');
+
+        /* --- Phase 5 : faire apparaître la carte avec animation entrante --- */
+        if (!isResult) {
+          card.style.transition = 'none';
+          card.classList.remove('card-exit');
+          card.classList.add('card-enter');
+          card.offsetHeight; /* force reflow */
+          card.style.transition = '';
+          card.classList.remove('card-enter');
+        }
+
+        onDone();
+      }, OVERLAY_FADE_DURATION);
+
+    }, TRANSITION_SCREEN_DURATION);
+
+  }, fromQuest ? CARD_FADE_DURATION : 0);
+}
+
+/* ============================================================
+   REMPLISSAGE DE LA CARTE (sans changement de thème/fond)
+   ============================================================ */
+function fillCard(q) {
+  var titreEl = document.getElementById('question-titre');
+  titreEl.textContent = q.titre || '';
+  titreEl.style.display = q.titre ? 'block' : 'none';
+  document.getElementById('question-text').textContent = q.texte;
+  document.getElementById('chapter-label').textContent = q.etape;
+  document.getElementById('narrative-banner').classList.add('hidden');
+
+  var container = document.getElementById('choices-container');
+  container.innerHTML = '';
+  q.choix.forEach(function(choix) {
+    var btn = document.createElement('button');
+    btn.className = 'choice-card';
+    btn.textContent = choix.texte;
+    btn.addEventListener('click', function() { selectChoice(choix, btn); });
+    container.appendChild(btn);
+  });
+}
+
+function updateProgress() {
+  var total = QUESTIONS.length;
+  document.getElementById('progress-bar').style.width = Math.round((questionIndex / total) * 100) + '%';
+  document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
+}
+
 function updateBackButton() {
   var btn = document.getElementById('btn-back');
   if (questionIndex > 0) {
@@ -288,86 +399,49 @@ function updateBackButton() {
   }
 }
 
-document.getElementById('btn-back').addEventListener('click', function() {
+/* ============================================================
+   BOUTONS
+   ============================================================ */
+document.getElementById('btn-start').addEventListener('click', function() {
   if (_transitioning) return;
-  goBack();
+  _transitioning = true;
+  resetState();
+  showTransitionScreen(0, false, function() {
+    _transitioning = false;
+  });
 });
 
-function goBack() {
-  if (answerHistory.length === 0) return;
+document.getElementById('btn-back').addEventListener('click', function() {
+  if (_transitioning || answerHistory.length === 0) return;
+  _transitioning = true;
   var last = answerHistory.pop();
   scores[last.guilde] = Math.max(0, scores[last.guilde] - 1);
-  questionIndex = last.questionIndex;
-  renderQuestion(false);
-}
+  showTransitionScreen(last.questionIndex, false, function() {
+    _transitioning = false;
+  });
+});
 
-function goBackFromResult() {
-  if (answerHistory.length === 0) return;
+document.getElementById('btn-back-result').addEventListener('click', function() {
+  if (_transitioning || answerHistory.length === 0) return;
+  _transitioning = true;
   var last = answerHistory.pop();
   scores[last.guilde] = Math.max(0, scores[last.guilde] - 1);
-  questionIndex = last.questionIndex;
+  /* Passer sur l'écran questionnaire avant la transition */
   showScreen('quest');
-  renderQuestion(false);
-}
+  showTransitionScreen(last.questionIndex, false, function() {
+    _transitioning = false;
+  });
+});
 
-/* ---------- RENDU D'UNE QUESTION ---------- */
-function renderQuestion(withTransitionIn) {
-  var q = QUESTIONS[questionIndex];
-  var total = QUESTIONS.length;
+document.getElementById('btn-restart').addEventListener('click', function() {
+  resetState();
+  setBackground('intro');
+  showScreen('intro');
+});
 
-  document.getElementById('progress-bar').style.width = Math.round((questionIndex / total) * 100) + '%';
-  document.getElementById('question-counter').textContent = 'Question ' + (questionIndex + 1) + ' / ' + total;
-
-  var actMap = { 'I': ['138','180','216'], 'II': ['180','155','60'], 'III': ['201','168','76'], 'IV': ['160','165','190'], 'V': ['200','110','48'] };
-  var actKey = (q.etape.match(/Acte ([IVX]+)/) || [])[1] || 'I';
-  var rgb = actMap[actKey] || actMap['I'];
-  var root = document.documentElement;
-  root.style.setProperty('--act-glow-r', rgb[0]);
-  root.style.setProperty('--act-glow-g', rgb[1]);
-  root.style.setProperty('--act-glow-b', rgb[2]);
-  var accentMap = { 'I': '#8ab4d8', 'II': '#c8a84c', 'III': '#c9a84c', 'IV': '#b0b8cc', 'V': '#d07030' };
-  root.style.setProperty('--act-accent', accentMap[actKey] || '#c9a84c');
-  setBackground(actKey);
-  document.getElementById('chapter-label').textContent = q.etape;
-  document.getElementById('narrative-banner').classList.add('hidden');
-
-  updateBackButton();
-
-  var card = document.getElementById('question-card');
-
-  function fillCard() {
-    var titreEl = document.getElementById('question-titre');
-    titreEl.textContent = q.titre || '';
-    titreEl.style.display = q.titre ? 'block' : 'none';
-    document.getElementById('question-text').textContent = q.texte;
-
-    var container = document.getElementById('choices-container');
-    container.innerHTML = '';
-    q.choix.forEach(function(choix) {
-      var btn = document.createElement('button');
-      btn.className = 'choice-card';
-      btn.textContent = choix.texte;
-      btn.addEventListener('click', function() { selectChoice(choix, btn); });
-      container.appendChild(btn);
-    });
-  }
-
-  if (withTransitionIn) {
-    /* Phase entrée : la carte remonte et apparaît */
-    card.classList.add('entering');
-    card.classList.remove('leaving');
-    fillCard();
-    card.offsetHeight; /* force reflow */
-    card.classList.remove('entering');
-  } else {
-    fillCard();
-    card.classList.remove('leaving', 'entering');
-    card.style.animation = 'none';
-    card.offsetHeight;
-    card.style.animation = '';
-  }
-}
-
+/* ============================================================
+   SÉLECTION D'UNE RÉPONSE
+   ============================================================ */
 function selectChoice(choix, clickedBtn) {
   if (_transitioning) return;
   _transitioning = true;
@@ -378,48 +452,42 @@ function selectChoice(choix, clickedBtn) {
   answerHistory.push({ questionIndex: questionIndex, guilde: choix.guilde });
   scores[choix.guilde] += 1;
 
-  var half = TRANSITION_DURATION / 2; /* ~500 ms par demi-phase */
-  var card = document.getElementById('question-card');
-  var overlay = document.getElementById('bg-overlay');
+  var nextIndex = questionIndex + 1;
 
-  /* Phase 1 : la carte descend et disparaît, l'image respire */
-  card.classList.add('leaving');
-  overlay.classList.add('breathe');
-
-  setTimeout(function() {
-    questionIndex++;
-    if (questionIndex < QUESTIONS.length) {
-      /* Prépare la nouvelle question sans animation de carte */
-      renderQuestion(false);
-      /* Phase 2 : l'image se ré-assombrit, la carte remonte */
-      overlay.classList.remove('breathe');
-      card.classList.add('entering');
-      card.offsetHeight;
-      card.classList.remove('entering', 'leaving');
+  if (nextIndex < QUESTIONS.length) {
+    showTransitionScreen(nextIndex, false, function() {
       _transitioning = false;
-    } else {
-      overlay.classList.remove('breathe');
+    });
+  } else {
+    /* Dernière question → transition spéciale vers le résultat */
+    document.getElementById('progress-bar').style.width = '100%';
+    showTransitionScreen(-1, true, function() {
+      showResult();
       _transitioning = false;
-      goToReveal();
-    }
-  }, half);
+    });
+  }
 }
 
-/* ---------- VERS L'ÉCRAN DE RÉVÉLATION ---------- */
-function goToReveal() {
-  document.getElementById('progress-bar').style.width = '100%';
-  showScreen('reveal');
-  setTimeout(showResult, 2400);
+/* ============================================================
+   RÉINITIALISATION
+   ============================================================ */
+function resetState() {
+  scores        = { eveilles: 0, gardiens: 0, batisseurs: 0 };
+  questionIndex = 0;
+  answerHistory = [];
+  _transitioning = false;
 }
 
-/* ---------- RÉSULTAT ---------- */
+/* ============================================================
+   RÉSULTAT
+   ============================================================ */
 function showResult() {
   var key = computeGuilde();
-  var g = GUILDES[key];
+  var g   = GUILDES[key];
 
   document.getElementById('result-emblem').textContent = g.embleme;
-  document.getElementById('result-name').textContent = g.titre;
-  document.getElementById('result-tagline').textContent = '';
+  document.getElementById('result-name').textContent   = g.titre;
+  document.getElementById('result-tagline').textContent    = '';
   document.getElementById('result-sovereignty').textContent = '';
 
   var descEl = document.getElementById('result-description');
@@ -436,21 +504,21 @@ function showResult() {
   document.getElementById('result-actions').style.display = 'none';
 
   var ctaEl = document.getElementById('result-cta-btn');
-  ctaEl.textContent = g.bouton;
+  ctaEl.textContent   = g.bouton;
   ctaEl.style.display = 'inline-block';
 
   document.getElementById('screen-result').setAttribute('data-guilde', key);
-  setBackground('result');
   showScreen('result');
 }
 
-/* ---------- CALCUL DE LA GUILDE ----------
+/* ============================================================
+   CALCUL DE LA GUILDE
    Règles de départage :
    Éveillés = Gardiens         → Gardiens
    Gardiens = Bâtisseurs       → Gardiens
    Éveillés = Bâtisseurs       → Éveillés
    Triple égalité              → Gardiens
-   ---------------------------------------- */
+   ============================================================ */
 function computeGuilde() {
   var e = scores.eveilles;
   var g = scores.gardiens;
@@ -465,5 +533,7 @@ function computeGuilde() {
   return 'batisseurs';
 }
 
-/* ---------- INIT ---------- */
+/* ============================================================
+   INIT
+   ============================================================ */
 setBackground('intro');
