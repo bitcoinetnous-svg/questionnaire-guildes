@@ -231,7 +231,7 @@ const QUESTIONS = [
 ];
 
 /* ---------- CONSTANTE DE TRANSITION ---------- */
-var TRANSITION_DURATION = 1000; /* ms — durée totale entre deux questions */
+var TRANSITION_DURATION = 2500; /* ms — durée totale entre deux questions */
 
 /* ---------- ÉTAT ---------- */
 var scores = { eveilles: 0, gardiens: 0, batisseurs: 0 };

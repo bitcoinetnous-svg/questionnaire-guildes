@@ -427,7 +427,7 @@ body::after {
   border: 1px solid rgba(201,168,76,0.1);
   border-radius: var(--radius-lg);
   padding: 28px 28px 24px;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
 /* Transition entre questions */
@@ -448,11 +448,11 @@ body::after {
 
 /* Overlay de respiration (image plus visible entre deux questions) */
 #bg-overlay {
-  transition: opacity 0.35s ease;
+  transition: opacity 0.8s ease;
 }
 
 #bg-overlay.breathe {
-  opacity: 0.25;
+  opacity: 0.08;
 }
 
 /* ===== BOUTON RETOUR ===== */
